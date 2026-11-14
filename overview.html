@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>deepcode — Project Map</title>
+<style>
+:root{
+  --paper:#f6f5f0;
+  --card:#fffdf8;
+  --ink:#151514;
+  --muted:#6a6a63;
+  --line:#ddd9cd;
+  --blue:#1f5eff;
+  --blue-soft:#e9efff;
+  --green:#1d7a4c;
+  --green-soft:#e5f3ea;
+  --amber:#916400;
+  --amber-soft:#fbf1d8;
+  --red:#b3261e;
+  --red-soft:#fbe9e7;
+  --mono:ui-monospace,"Cascadia Code","SFMono-Regular",Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:3px}
+.page{max-width:1120px;margin:0 auto;padding:34px 26px 72px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--blue);color:#fff;padding:10px 14px;z-index:20}
+.skip:focus{left:12px;top:12px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.12fr .88fr;gap:34px;align-items:end;padding:18px 0 34px}
+.kicker{font:11px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+h1{font-size:clamp(46px,7vw,82px);line-height:.94;letter-spacing:-.055em;margin:0 0 18px;font-weight:700}
+h1 .dot{color:var(--blue)}
+.lede{font-size:18px;line-height:1.55;color:#3c3c37;max-width:54ch;margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+.badge{font:10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#3d3d38;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 10px;display:inline-flex;align-items:center;gap:6px}
+.badge::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--blue)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+.stat{border-top:2px solid var(--ink);padding-top:9px}
+.stat b{display:block;font-size:19px;letter-spacing:-.02em}
+.stat span{font:10.5px/1.4 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.term{background:#111214;border:1px solid #2a2d31;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px rgba(20,20,20,.13)}
+.term-bar{display:flex;align-items:center;gap:6px;padding:10px 13px;border-bottom:1px solid #26292d}
+.term-bar i{width:9px;height:9px;border-radius:50%;background:#3a3d42;display:block}
+.term pre{margin:0;padding:16px 17px 19px;color:#dfddd5;font:11.5px/1.62 var(--mono);overflow-x:auto;white-space:pre}
+.term .b{color:#7fa2ff;font-weight:700}
+.term .g{color:#78d39e}
+.term .d{color:#8a8d93}
+.term .m{color:#e9e7df}
+.term .r{color:#ff8d84}
+
+/* ---------- toc ---------- */
+.toc{position:sticky;top:0;z-index:10;display:flex;gap:4px;overflow-x:auto;background:rgba(246,245,240,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 0;margin:0 0 18px}
+.toc a{flex:0 0 auto;font:10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:7px 9px;border-radius:6px}
+.toc a:hover{color:var(--ink);background:#ece9df;text-decoration:none}
+
+/* ---------- sections ---------- */
+main{padding-top:34px}
+section{scroll-margin-top:64px;padding:30px 0 42px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.sec-num{font:11px/1 var(--mono);letter-spacing:.1em;color:var(--blue)}
+h2{font-size:clamp(26px,3.4vw,34px);letter-spacing:-.035em;line-height:1.1;margin:0}
+h3{font-size:17px;letter-spacing:-.015em;margin:0 0 8px}
+p{margin:0 0 14px;color:#33332e}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.lead{font-size:17px;max-width:70ch;color:#3a3a35}
+
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:19px 20px}
+.card p:last-child{margin-bottom:0}
+.card .tag{font:10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:8px}
+.card h3{font-size:15.5px}
+.card p{font-size:14px;line-height:1.55;color:#45453f}
+
+.note{border-left:3px solid var(--blue);background:var(--blue-soft);padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0}
+.note p{margin:0;font-size:14px}
+.note.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+.note.risk{border-left-color:var(--red);background:var(--red-soft)}
+
+pre{background:#111214;color:#e7e5de;padding:18px 20px;border-radius:12px;overflow:auto;font:12.5px/1.65 var(--mono);margin:16px 0;border:1px solid #26292d}
+pre .c{color:#8d9097}
+pre .k{color:#7fa2ff}
+pre .s{color:#a6d9b8}
+code{font-family:var(--mono);font-size:.9em;background:#eae7dc;color:#26261f;padding:1.5px 5px;border-radius:5px}
+h2 code,h3 code{background:transparent;padding:0;font-size:.92em}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);margin:18px 0}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th{font:10.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;background:#f1eee5;border-bottom:1px solid var(--line)}
+td{padding:12px 14px;vertical-align:top;font-size:14px;line-height:1.5;color:#3b3b35}
+tr+tr td{border-top:1px solid var(--line)}
+td.mono,th.mono{font-family:var(--mono);font-size:12px}
+td strong{color:var(--ink)}
+
+.chip{display:inline-block;font:10px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:5px 7px;border-radius:5px;border:1px solid var(--line);background:#f1eee5;color:#4b4b44;white-space:nowrap}
+.chip.ok{background:var(--green-soft);border-color:#bfe0cc;color:var(--green)}
+.chip.unit{background:var(--amber-soft);border-color:#e8d6a5;color:var(--amber)}
+.chip.no{background:var(--red-soft);border-color:#ecc6c1;color:var(--red)}
+
+/* ---------- loop ---------- */
+.loop{display:grid;gap:12px;margin:20px 0;counter-reset:step}
+.step{display:grid;grid-template-columns:38px 1fr;gap:15px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.step-n{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font:12px/30px var(--mono);text-align:center;font-weight:700}
+.step h3{margin:2px 0 4px}
+.step p{margin:0;font-size:14px;line-height:1.55;color:#45453f}
+.step code{font-size:11.5px}
+.guards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px}
+.guard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.guard b{display:block;font:11px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.guard span{font-size:13.5px;line-height:1.45}
+
+/* ---------- layers ---------- */
+.stack{margin:20px 0}
+.layer{display:grid;grid-template-columns:170px 1fr;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px 18px}
+.layer b{font:11px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--blue)}
+.layer span{font-size:14px;color:#3b3b35}
+.arrow{text-align:center;color:#a4a49b;font:14px/1 var(--mono);padding:5px 0}
+
+/* ---------- budget ---------- */
+.budget{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);margin:18px 0}
+.budget-bar{display:flex;height:44px}
+.budget-bar div{display:flex;align-items:center;justify-content:center;font:10.5px/1.2 var(--mono);letter-spacing:.02em;text-align:center;padding:0 8px;border-right:1px solid rgba(0,0,0,.08)}
+.budget-bar div:last-child{border-right:0}
+.budget-bar .sys{flex:17;background:#ece9df;color:#4b4b44}
+.budget-bar .hist{flex:27;background:var(--blue-soft);color:#1c3f9e}
+.budget-bar .res{flex:10;background:var(--green-soft);color:var(--green)}
+.budget-note{display:flex;justify-content:space-between;gap:12px;padding:9px 13px;border-top:1px solid var(--line);font:10.5px/1.4 var(--mono);color:var(--muted)}
+
+/* ---------- future ---------- */
+.future{background:#121315;color:#e9e8e2;border-radius:18px;padding:36px 34px;margin-top:56px}
+.future .sec-num{color:#7fa2ff}
+.future h2{color:#fff}
+.future .lead{color:#b9b9b1;max-width:72ch}
+.future .grid-3{margin-top:24px}
+.future .card{background:#1a1c1f;border-color:#2c2f34}
+.future .card .tag{color:#7fa2ff}
+.future .card h3{color:#fff}
+.future .card p{color:#b4b4ac}
+.future .card strong{color:#e9e8e2}
+.future code{background:#24272b;color:#dfe6ff}
+.future .rank{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:8px;counter-reset:rank}
+.future .rank li{position:relative;background:#1a1c1f;border:1px solid #2c2f34;border-radius:10px;padding:13px 15px 13px 46px;font-size:14px;line-height:1.55;color:#c7c7bf}
+.future .rank li::before{counter-increment:rank;content:counter(rank,decimal-leading-zero);position:absolute;left:15px;top:13px;font:11px/1.7 var(--mono);color:#7fa2ff}
+.future .rank b{color:#fff}
+.future ul{margin:10px 0 0;padding-left:17px;color:#b4b4ac;font-size:13.5px;line-height:1.6}
+.future li+li{margin-top:5px}
+.future .hard{color:#d3d3cb;font-size:13.5px;line-height:1.6}
+
+footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font:10.5px/1.6 var(--mono);color:var(--muted)}
+footer a{color:var(--muted)}
+
+@media (max-width:860px){
+  .page{padding:22px 18px 56px}
+  .hero{grid-template-columns:1fr;gap:26px;padding-top:8px}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .layer{grid-template-columns:1fr;gap:4px}
+  .future{padding:26px 20px;border-radius:14px}
+  .toc{border-radius:0}
+}
+@media (max-width:520px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){grid-column:1/-1}
+  .step{grid-template-columns:30px 1fr;padding:14px}
+  .step-n{width:26px;height:26px;font-size:11px;line-height:26px}
+  .budget-bar div{font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{
+  body{background:#fff}
+  .toc,.skip{display:none}
+  .page{max-width:none;padding:0}
+  section{page-break-inside:avoid}
+  .future{background:#fff;color:#000;border:1px solid #bbb}
+  .future h2,.future .card h3,.future .rank b{color:#000}
+  .future .lead,.future .card p,.future .rank li{color:#222}
+  .future .card,.future .rank li{background:#fff;border-color:#ccc}
+  pre{background:#f4f4f4;color:#000;border-color:#ccc}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="page">
+
+<header class="hero">
+  <div>
+    <div class="kicker">Project map · 14 November 2026</div>
+    <h1>deepcode<span class="dot">.</span></h1>
+    <p class="lede">A terminal coding agent that reads code, edits files, runs commands, and checks its own work — one Python file, standard library only, no package install.</p>
+    <div class="badges">
+      <span class="badge">stdlib only</span>
+      <span class="badge">Windows</span>
+      <span class="badge">Ollama default</span>
+      <span class="badge">OpenAI-compatible</span>
+      <span class="badge">full disk</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>1,830</b><span>lines · 77.6 KB</span></div>
+      <div class="stat"><b>7</b><span>tools</span></div>
+      <div class="stat"><b>0</b><span>dependencies</span></div>
+    </div>
+  </div>
+  <div class="term" aria-label="Example terminal session">
+    <div class="term-bar"><i></i><i></i><i></i></div>
+    <pre><span class="b">D E E P C O D E</span>
+<span class="d">MODEL</span>     qwen3.5:4b
+<span class="d">BACKEND</span>   ollama · ctx 4096 · 8 threads
+
+<span class="d">YOU</span> › fix buggy.py so the test passes
+
+<span class="b">STEP 01</span>   4.0s · 14 tok
+<span class="b">LIST</span>     .
+<span class="b">STEP 02</span>   3.3s · 48 tok
+<span class="b">READ</span>     buggy.py
+<span class="b">STEP 04</span>   12s · 144 tok
+<span class="b">EDIT</span>     buggy.py
+         <span class="r">- return a - b</span>
+         <span class="g">+ return a + b</span>
+<span class="b">STEP 06</span>   4.0s · 48 tok
+<span class="b">SHELL</span>    python test_buggy.py
+         <span class="g">exit 0 · PASS</span>
+
+<span class="g">✓ DONE</span>   36s · 7 steps · 385 tokens</pre>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#what">01 · What it is</a>
+  <a href="#loop">02 · The loop</a>
+  <a href="#map">03 · Code map</a>
+  <a href="#tools">04 · Tools</a>
+  <a href="#context">05 · Context &amp; heat</a>
+  <a href="#sessions">06 · Sessions</a>
+  <a href="#safety">07 · Safety</a>
+  <a href="#verified">08 · Verification</a>
+  <a href="#potential">09 · Potential</a>
+</nav>
+
+<main id="main">
+
+<section id="what">
+  <div class="sec-head"><span class="sec-num">01</span><h2>What it is</h2></div>
+  <p class="lead">deepcode is a single-file, terminal-only coding harness. You type a request at <code>YOU ›</code>; it plans with tools, reads and edits real files, runs PowerShell, checks the result, and answers. It keeps a continuous conversation and writes every turn to a JSONL session log.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="tag">Shape</span>
+      <h3>One file, zero installs</h3>
+      <p><code>deepcode.py</code> is 1,830 lines of Python using only the standard library. No pip, no Node, no build step, no TUI library. The UI is ANSI text.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Default engine</span>
+      <h3>Local Ollama</h3>
+      <p>Talks to <code>http://127.0.0.1:11434</code> with the native <code>/api/chat</code> API, so it controls context size, threads, output length, batching, and keep-alive.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Optional engine</span>
+      <h3>Any OpenAI-compatible API</h3>
+      <p>Point <code>--api</code> at a base URL ending in <code>/v1</code> and pass <code>--key</code>. DeepSeek, OpenRouter, LM Studio, and similar endpoints use the same tool schemas.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Permissions</span>
+      <h3>Full disk, auto-run</h3>
+      <p>No path clamp and no confirmation prompts. File tools reach the whole disk; shell runs as the current user. This is a deliberate choice, and the main risk.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><strong>The core bet:</strong> a small local model plus a tight tool loop, a strict prompt, and verification can do real coding work without a cloud account — as long as the context window and the tool output are kept under control.</p>
+  </div>
+
+  <h3 style="margin-top:24px">Project files</h3>
+  <pre>deepcode/
+├── deepcode.py      <span class="c"># the whole harness: UI, clients, tools, loop, checks</span>
+├── README.md        <span class="c"># usage, flags, performance notes, safety</span>
+├── overview.html    <span class="c"># this map (self-contained, no assets)</span>
+├── .gitignore       <span class="c"># sessions/, __pycache__/, *.pyc</span>
+└── sessions/        <span class="c"># one JSONL transcript per conversation (ignored)</span></pre>
+</section>
+
+<section id="loop">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The loop</h2></div>
+  <p class="lead">Every request goes through the same five-stage cycle. There is no <code>finish()</code> tool: a reply with no tool calls is the final answer.</p>
+
+  <div class="loop">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div>
+        <h3>Take the task, trim the history</h3>
+        <p><code>Harness.run_turn()</code> appends the user message and immediately trims the conversation to the context budget. The current task is always preserved; the oldest whole turns go first.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div>
+        <h3>Ask the model</h3>
+        <p><code>client.chat()</code> sends the system prompt, history, and all seven tool schemas. Ollama streams NDJSON chunks and Ctrl+C stops generation; the OpenAI path is a normal request/response call.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div>
+        <h3>Read the reply</h3>
+        <p>The reply carries text, optional reasoning, and zero or more tool calls. No tool calls means the turn is done: the answer is printed, logged, and control returns to <code>YOU ›</code>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div>
+        <h3>Execute tools, feed results back</h3>
+        <p>Each call is validated and run in order. The observation is clipped, appended as a <code>tool</code> message, and the loop calls the model again. Multiple calls per reply are allowed.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div>
+        <h3>Stop on an answer or a guard</h3>
+        <p>A normal answer ends the turn. Caps stop runaway work, and an empty reply is retried once after a harder trim; a second empty reply becomes a visible error instead of silence.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:26px">Guardrails</h3>
+  <div class="guards">
+    <div class="guard"><b>Steps</b><span><code>--max-steps 60</code> model turns per request.</span></div>
+    <div class="guard"><b>Wall clock</b><span><code>--max-minutes 20</code>, checked before each step. <code>0</code> disables it.</span></div>
+    <div class="guard"><b>Repeats</b><span>The third identical tool call is refused with an error result.</span></div>
+    <div class="guard"><b>Empty reply</b><span>Trim to half budget, retry once, then report prompt tokens and <code>done_reason</code>.</span></div>
+    <div class="guard"><b>Context</b><span>History is char-budgeted from <code>--ctx</code>; tool output is clipped adaptively.</span></div>
+    <div class="guard"><b>Tool calls</b><span>Bad arguments become an error observation, not a crash.</span></div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Code map</h2></div>
+  <p class="lead">The file is organized top-down: tunables, prompt and paths, tools, presentation, clients, harness, checks, entry point. Here is the live call graph.</p>
+
+  <pre>main(argv)
+├── <span class="k">UI</span> · banner · prompt · spinner · diffs · todo
+├── <span class="k">Harness</span>(cfg, ui)
+│   ├── build_system_prompt()      <span class="c"># workspace, OS, Desktop, AGENTS.md</span>
+│   ├── _open_log()                <span class="c"># sessions/*.jsonl, resume</span>
+│   └── run_turn(task)
+│       ├── trim_history()         <span class="c"># char budget from ctx</span>
+│       ├── client.chat()          <span class="c"># Ollama stream / OpenAI JSON</span>
+│       ├── execute_tool()         <span class="c"># 7 tools, clipped observations</span>
+│       └── append() + log()       <span class="c"># history and transcript</span>
+├── <span class="k">doctor</span>(cfg, ui)              <span class="c"># measure load, tok/s, GPU split</span>
+└── <span class="k">self_check</span>()                <span class="c"># no model required</span></pre>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Area</th><th class="mono">Key symbols</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Entry &amp; config</strong></td><td class="mono">main, argparse</td><td>Parses flags, validates limits, resolves the workspace, picks the backend, runs the REPL.</td></tr>
+        <tr><td><strong>Prompt &amp; paths</strong></td><td class="mono">build_system_prompt, desktop_path, resolve_path</td><td>Static system prompt; loads <code>AGENTS.md</code>; expands <code>~</code> and env vars; remaps the stale Desktop alias.</td></tr>
+        <tr><td><strong>Presentation</strong></td><td class="mono">UI, Spinner, args_summary, diff</td><td>Monochrome Apple-ish layout with one blue accent; live step timings; edit diffs; todo rendering.</td></tr>
+        <tr><td><strong>Model clients</strong></td><td class="mono">OllamaClient, OpenAIClient, merge_ollama_event</td><td>Native Ollama streaming with <code>num_ctx</code>, <code>num_thread</code>, <code>num_predict</code>; OpenAI-compatible JSON with tools.</td></tr>
+        <tr><td><strong>Harness</strong></td><td class="mono">Harness</td><td>Owns history, todo state, repeat guard, deadline, logging, resume, and model unload on exit.</td></tr>
+        <tr><td><strong>Tools</strong></td><td class="mono">TOOL_SCHEMAS, TOOL_FUNCS, execute_tool, clip</td><td>Seven functions plus their JSON schemas; centralized error handling; output clipping.</td></tr>
+        <tr><td><strong>Context</strong></td><td class="mono">message_size, trim_history</td><td>Estimates characters per message; shortens large tool output; drops the oldest whole turns.</td></tr>
+        <tr><td><strong>Sessions</strong></td><td class="mono">_open_log, _read_messages, drop_incomplete_tail</td><td>Append-only JSONL; resume latest-with-messages; discards an interrupted tool-call tail.</td></tr>
+        <tr><td><strong>Diagnostics</strong></td><td class="mono">doctor, self_check</td><td>Real model speed and GPU split; offline assertions for paths, trimming, schemas, conversions, retry, UI.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p><strong>Why the prompt is static:</strong> the system prompt and conversation are append-only during a turn, so Ollama can reuse its cached prompt prefix between steps instead of reprocessing the whole chat. Trimming is the only thing that invalidates that cache.</p>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="sec-head"><span class="sec-num">04</span><h2>The seven tools</h2></div>
+  <p class="lead">The model sees the same JSON schemas on every backend. Inputs are checked centrally; a bad call returns an error string and the loop continues.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tool</th><th>What it does</th><th>Limits and behavior</th></tr></thead>
+      <tbody>
+        <tr><td class="mono"><strong>shell</strong></td><td>Runs PowerShell 5.1 as the current user. Full disk; can build, test, git, and install.</td><td>New process per call; <code>workdir</code>; timeout 120 s default, 600 s max. Only the shell is killed on timeout — grandchildren may survive. UTF-8 is forced on redirected output.</td></tr>
+        <tr><td class="mono"><strong>list_dir</strong></td><td>Lists directories first, then files with sizes.</td><td>Non-recursive by default; recursive walks cap at 500 entries and skip <code>.git</code>, <code>node_modules</code>, caches, and build output.</td></tr>
+        <tr><td class="mono"><strong>read_file</strong></td><td>Reads UTF-8 text with 1-based line numbers for reference.</td><td>300 lines by default, 2,000 hard cap; <code>offset</code> and <code>limit</code>. Line-number prefixes must not be copied into <code>edit_file</code>.</td></tr>
+        <tr><td class="mono"><strong>write_file</strong></td><td>Creates or overwrites a text file; parent directories are created.</td><td>Overwrites are permanent. Returns the character count and resolved path.</td></tr>
+        <tr><td class="mono"><strong>edit_file</strong></td><td>Replaces exact text; shows a compact diff in the terminal.</td><td>Fails if the old text is absent or occurs more than once, unless <code>replace_all</code> is set. Empty <code>old</code> is rejected.</td></tr>
+        <tr><td class="mono"><strong>search_files</strong></td><td>Searches file contents with a regular expression and optional filename glob.</td><td>Case-sensitive by default (<code>(?i)</code> to change); caps at 5,000 files, 100 matches, 1 MB per file; skips binaries and heavy directories.</td></tr>
+        <tr><td class="mono"><strong>update_todo</strong></td><td>Replaces the visible checklist for multi-step work.</td><td>Max 12 items; statuses <code>pending</code>, <code>doing</code>, <code>done</code>; the UI redraws the list after each update.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="tag">Path handling</span>
+      <h3>Absolute, relative, or aliased</h3>
+      <p>Relative paths resolve against <code>--workspace</code>; absolute paths are used as given. <code>~</code> and <code>%VAR%</code> expand. If OneDrive redirected the Desktop, writes to <code>C:\Users\&lt;you&gt;\Desktop</code> are remapped to the real folder — for file tools, shell text, and workdirs.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Failure model</span>
+      <h3>Errors are observations</h3>
+      <p>Unknown tools, invalid JSON arguments, missing files, and OS errors become <code>ERROR: …</code> strings in the transcript. The model can read the error and try a different approach; one bad call never ends the session.</p>
+    </div>
+  </div>
+</section>
+
+<section id="context">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Context, speed, and heat</h2></div>
+  <p class="lead">A 4B model on a 4 GB laptop GPU is the constraint that shapes the whole design. Everything here exists to keep the prompt inside the window and the CPU from cooking.</p>
+
+  <h3>The history budget</h3>
+  <p>The budget is computed once per launch from the context window, then enforced before every turn:</p>
+  <pre>reserve        = min(--max-predict, 1024)
+tool_schema    = len(json.dumps(TOOL_SCHEMAS))       <span class="c"># ~3,815 chars</span>
+history_budget = max(1500, int((ctx - reserve) * 2.8) - tool_schema)
+<span class="c"># ctx 4096 → 4,786 chars for system + conversation</span></pre>
+
+  <div class="budget" aria-label="Approximate token split for a 4096-token context">
+    <div class="budget-bar">
+      <div class="sys">tool schemas<br>≈ 1.3k</div>
+      <div class="sys">system<br>≈ 0.5k</div>
+      <div class="hist">history<br>≤ 1.2k</div>
+      <div class="res">answer<br>≈ 1.0k</div>
+    </div>
+    <div class="budget-note"><span>exact split depends on code density</span><span>rough token view · not to scale</span></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="tag">Trim order</span>
+      <h3>Cheap cuts first</h3>
+      <p>1. Any tool message over 1,500 chars is shortened to an 800-char head plus a 400-char tail. 2. If still over budget, the oldest whole turns are deleted up to the current task. The current request is never removed.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Tool output</span>
+      <h3>Adaptive clipping</h3>
+      <p><code>min(6,000, max(1,500, ctx × 0.75))</code>. At the default 4k context that is 3,072 chars; at 8k it reaches the 6,000 cap. The full observation still goes to the session log.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Caching</span>
+      <h3>Append-only by default</h3>
+      <p>The system prompt is static and history is append-only, so Ollama reuses its prompt prefix between steps. Trimming, <code>/new</code>, and <code>--resume</code> start a fresh prefix.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Failure mode</span>
+      <h3>Empty reply = overflow or silence</h3>
+      <p>If the prompt fills the window, the model can stop with no answer. The harness trims once and retries, then reports prompt tokens and <code>done_reason</code> instead of printing nothing.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:26px">The cool profile</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Setting</th><th class="mono">Default</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>CPU threads</td><td class="mono">8 of 16</td><td>The biggest heat lever; leaves headroom for the rest of the machine.</td></tr>
+        <tr><td>Context</td><td class="mono">4,096</td><td>Smaller KV cache and a smaller prompt to evaluate every step.</td></tr>
+        <tr><td>Max predict</td><td class="mono">1,024</td><td>Caps runaway generations; also reserves answer space.</td></tr>
+        <tr><td>Max minutes</td><td class="mono">20</td><td>Hard wall-clock stop per request; <code>0</code> disables.</td></tr>
+        <tr><td>Max steps</td><td class="mono">60</td><td>Bounds total model turns per request.</td></tr>
+        <tr><td>Batch</td><td class="mono">128</td><td>Smaller batches, less bursty CPU load.</td></tr>
+        <tr><td>Keep alive</td><td class="mono">2m</td><td>Unloads the model shortly after the session goes idle; exit sends <code>keep_alive: 0</code>.</td></tr>
+        <tr><td>Temperature</td><td class="mono">0.2</td><td>Low variance for file edits and commands.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Measured on this machine</h3>
+  <div class="grid-3">
+    <div class="card"><span class="tag">Generation</span><h3>14.9–17.0 tok/s</h3><p>Short doctor runs at 8 threads. Real coding steps land around 12–14 tok/s once prompts grow.</p></div>
+    <div class="card"><span class="tag">Memory</span><h3>3.7 GB loaded</h3><p>GPU 50% · CPU 50%. The 4 GB RTX 3050 cannot hold the weights plus the KV cache, so Ollama splits layers.</p></div>
+    <div class="card"><span class="tag">Load</span><h3>8–11 s cold</h3><p>Cached follow-up steps skip the load. <code>--doctor</code> prints load time, rate, settings, and the split.</p></div>
+  </div>
+
+  <div class="note warn">
+    <p><strong>The heat is Ollama's split, not the Python.</strong> The harness can cap threads, output, and time, but it cannot move more of a 3.7 GB model into 4 GB of VRAM. If it runs hot: <code>--threads 6</code> or <code>4</code>, a smaller model such as <code>qwen3.5:2b</code> (1.9 GB, fully on GPU), or a remote API. There is no CPU temperature sensor exposed to the harness.</p>
+  </div>
+</section>
+
+<section id="sessions">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Sessions and resume</h2></div>
+  <p class="lead">Every message, tool call, and observation is appended to a JSONL transcript. Logs are for replay and debugging — they are not backups.</p>
+
+  <pre><span class="c">// sessions/2026-11-14T12-05-05.jsonl (one JSON object per line)</span>
+{"kind":"start","model":"qwen3.5:4b","backend":"ollama",...}
+{"kind":"message","message":{"role":"user","content":"fix buggy.py"}}
+{"kind":"task","task":"fix buggy.py"}
+{"kind":"assistant","step":1,"content":"","tool_calls":[...]}
+{"kind":"tool","name":"read_file","args":{...},"observation":"..."}
+{"kind":"done","content":"The test passes."}
+{"kind":"end"}</pre>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="tag">Resume rules</span>
+      <h3>Latest means latest usable</h3>
+      <p><code>--resume</code> without a path scans newest-first and skips empty logs left by <code>/new</code>. An explicit path is used as given. A trailing tool result and its assistant tool-call group are dropped if the process died mid-call.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Continuity</span>
+      <h3>History is restored, prompt is refreshed</h3>
+      <p>The saved conversation is loaded, then the current system prompt replaces the old one — so workspace, date, Desktop path, and <code>AGENTS.md</code> reflect this launch. New records append to the same file.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Commands</span>
+      <h3><code>/new</code>, <code>/exit</code>, Ctrl+C</h3>
+      <p><code>/new</code> closes the log and starts a fresh session; same-second collisions get a <code>-2</code> suffix. <code>/exit</code> or <code>/quit</code> leaves. Ctrl+C aborts the current step and returns to the prompt.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Shutdown</span>
+      <h3>The model is unloaded</h3>
+      <p><code>Harness.close()</code> logs the end and sends <code>keep_alive: 0</code> to Ollama. Verified: <code>/api/ps</code> reports no loaded models after exit.</p>
+    </div>
+  </div>
+</section>
+
+<section id="safety">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Safety model</h2></div>
+  <p class="lead">This harness is intentionally unrestricted. It is built for one user on one laptop, not for untrusted input.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <span class="tag">By design</span>
+      <h3>No clamp, no prompt</h3>
+      <p>File tools reach the whole disk and shell runs as you. The model executes what it emits. There is no approval step and no dry-run mode.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Consequence</span>
+      <h3>No undo</h3>
+      <p><code>write_file</code> overwrites permanently; shell can delete anything you can delete. Session logs record what happened, but they cannot restore files.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Exposure</span>
+      <h3>Logs can contain secrets</h3>
+      <p>Commands, environment-dependent output, and file contents can land in <code>sessions/*.jsonl</code>. Treat the folder as sensitive; it is git-ignored, not encrypted.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Edges</span>
+      <h3>Known limits</h3>
+      <p>Timeout kills the shell, not its grandchildren. Shell Desktop remapping is textual, so <code>%USERPROFILE%\Desktop</code> or forward-slash spellings can bypass it. The model can still make wrong choices.</p>
+    </div>
+  </div>
+
+  <div class="note risk">
+    <p><strong>Practical rule:</strong> run it in a git repository or a scratch folder, commit before a risky task, and keep <code>--workspace</code> pointed at work you can afford to lose. “Full disk” means full disk.</p>
+  </div>
+</section>
+
+<section id="verified">
+  <div class="sec-head"><span class="sec-num">08</span><h2>What has been verified</h2></div>
+  <p class="lead">Claims in this page are tied to a check. “Pass” means it ran on this machine with Ollama; “unit” means assertion-only; “not run” is honest debt.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Check</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td><code>--self-check</code></td><td><span class="chip ok">pass</span></td><td>Paths and Desktop remap, trimming, schema/function match, todo validation, OpenAI/Ollama conversion, streaming merge, <code>done_reason</code>, resume skip, empty-retry fake client, colors, spinner.</td></tr>
+        <tr><td><code>--doctor</code></td><td><span class="chip ok">pass</span></td><td>14.9–17.0 tok/s on a 16-token probe; 3.7 GB loaded; GPU 50% / CPU 50% warning.</td></tr>
+        <tr><td>Live bug fix</td><td><span class="chip ok">pass</span></td><td>Fixed <code>return a - b</code> to <code>a + b</code>, ran the test, got <code>PASS</code>. 36 s, 7 steps, 385 tokens, 13.6 tok/s.</td></tr>
+        <tr><td>No-tool answer</td><td><span class="chip ok">pass</span></td><td>“Reply with exactly: READY” → <code>READY</code> in 11 s, 1 step, 29.6 tok/s.</td></tr>
+        <tr><td>Desktop task</td><td><span class="chip ok">pass</span></td><td>Resolved the real Desktop, wrote <code>check.py</code>, ran it, verified <code>Hello World</code>. 19 s, 4 steps.</td></tr>
+        <tr><td>Resume context</td><td><span class="chip ok">pass</span></td><td>Resumed a saved log and the model quoted the previous request exactly.</td></tr>
+        <tr><td>Resume latest</td><td><span class="chip unit">unit</span></td><td>Newest log is skipped when it has no messages; the next usable session is loaded.</td></tr>
+        <tr><td><code>/new</code> reset</td><td><span class="chip ok">pass</span></td><td>History cleared and a new JSONL file created.</td></tr>
+        <tr><td>Exit unload</td><td><span class="chip ok">pass</span></td><td><code>/api/ps</code> reports no models loaded after the process exits.</td></tr>
+        <tr><td>Empty-reply retry</td><td><span class="chip unit">unit</span></td><td>Fake client returns empty once, then a normal answer; asserts two calls and the final message.</td></tr>
+        <tr><td>Remote OpenAI path</td><td><span class="chip unit">unit</span></td><td>Message/tool conversion asserted; no API key configured for a live call.</td></tr>
+        <tr><td>Ctrl+C while streaming</td><td><span class="chip no">not run</span></td><td>Handled as a normal <code>KeyboardInterrupt</code> around the stream, but not exercised on a real TTY.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p><strong>Case study — the silent empty reply.</strong> A session with one prior “hi” turn and a 6,000-char file read reached <strong>4,082 prompt tokens of 4,096</strong>. The model had 14 tokens left, emitted thinking markers, and stopped with <code>done_reason: length</code>. The old 12,288-char budget was almost the entire window and trimming never ran before a new turn. The fix: derive the budget from <code>ctx</code> and <code>max-predict</code>, trim before each turn, clip tool output by context, and retry an empty reply once with a real diagnostic.</p>
+  </div>
+</section>
+
+<section id="potential" class="future">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Potential</h2></div>
+  <p class="lead">The harness is deliberately small. The highest-leverage work from here is not more features — it is less risk, better context, and more verification. These are ordered by payoff, not novelty.</p>
+
+  <div class="grid-3">
+    <div class="card">
+      <span class="tag">Now · hours</span>
+      <h3>Close the honest gaps</h3>
+      <ul>
+        <li>Test Ctrl+C on a real terminal, including during tool execution.</li>
+        <li>Live-test the OpenAI/DeepSeek path with a key; stream SSE and cancel.</li>
+        <li>Log <code>prompt_tokens</code> and <code>done_reason</code> on every step.</li>
+        <li>Add <code>--ctx</code> presets: cool (4k/8), balanced (8k/12), long (16k/8).</li>
+        <li>Turn the trim and Desktop-remap cases into explicit self-checks.</li>
+        <li><code>git init</code> and a first commit, so the agent has an undo boundary.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag">Next · days</span>
+      <h3>Make the agent smarter</h3>
+      <ul>
+        <li><strong>Repo map:</strong> tree plus symbol index and file summaries; retrieve instead of blind reads.</li>
+        <li><strong>Patch edits:</strong> unified diffs for small, reviewable changes.</li>
+        <li><strong>Compaction:</strong> summarize old turns instead of deleting them.</li>
+        <li><strong>Approval modes:</strong> <code>--read-only</code>, <code>--ask</code>, and a sandbox profile.</li>
+        <li><strong>Process-tree kill</strong> on timeout, so builds and tests do not survive.</li>
+        <li><strong>Config file</strong> and named sessions; a token/cost meter in the footer.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag">Later · weeks</span>
+      <h3>Turn it into a platform</h3>
+      <ul>
+        <li>MCP client for external tools and data sources.</li>
+        <li>Subagents for exploration and review with separate contexts.</li>
+        <li>Editor integration through a small local server.</li>
+        <li>Local embeddings for semantic search over the repo.</li>
+        <li>Cross-platform shell layer for macOS and Linux.</li>
+        <li>Packaging, signed releases, and a proper TUI with a diff pane.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:30px;color:#fff">Highest leverage, ranked</h3>
+  <ol class="rank">
+    <li><b>Approval and sandbox modes.</b> The biggest risk reducer. It makes “full disk by default” a choice instead of a property, without taking capability away from users who want it.</li>
+    <li><b>Repo map and symbol search.</b> The biggest quality jump for a 4B model. Most wasted steps are blind reads; retrieval would cut tokens, time, and heat at once.</li>
+    <li><b>Streaming remote API and cancellation.</b> Brings the OpenAI-compatible path to parity with local Ollama and makes Ctrl+C predictable everywhere.</li>
+    <li><b>Process-tree kill on timeout.</b> A timed-out <code>npm test</code> or build should not leave children running after the harness moves on.</li>
+    <li><b>Context compaction.</b> Summaries preserve decisions and file names that trimming otherwise throws away, which is what long sessions need at 4k.</li>
+  </ol>
+
+  <div class="grid-2" style="margin-top:26px">
+    <div class="card">
+      <span class="tag">Hard limits</span>
+      <h3>What code cannot fix</h3>
+      <p class="hard">The 4 GB VRAM split is hardware; only a smaller model or a remote API changes it. A 4B model will still misread files and choose the wrong tool. No thermal sensor is exposed, so thread caps are a proxy, not a control loop. Full disk is the product — any safety must be opt-in.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Design rule</span>
+      <h3>Judge it by verification</h3>
+      <p class="hard">The next version should be judged by how often it runs the test, not by how much it can do. A smaller tool set with hard checks beats a larger one that claims success. Keep the standard library constraint: every dependency raises the install cost and shrinks the places this can run.</p>
+    </div>
+  </div>
+
+  <p class="small" style="margin:26px 0 0;color:#8f9089">Most of the gap between this and a polished agent is context engineering, not model size. The loop is already correct; the next wins are making it see less, remember better, and ask before the irreversible step.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>deepcode · project map · generated 14 Nov 2026</span>
+  <span><a href="README.md">README.md</a> · <a href="deepcode.py">deepcode.py</a> · self-contained page</span>
+</footer>
+</div>
+</body>
+</html>

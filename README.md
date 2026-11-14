@@ -1,10 +1,16 @@
-# pc-manager
+# deepcode
 
-Autonomous Windows PC manager driven by a local Ollama model (`qwen3.5:4b` by default).
-The model runs a ReAct loop: reason, call one tool, observe the result, repeat until
-`finish()`. No pip dependencies; Python 3.10+.
+A small autonomous coding agent for Windows. Python standard library only.
+It runs a tool loop against a local Ollama model by default, and can point at
+any OpenAI-compatible API (DeepSeek, OpenRouter, LM Studio).
 
-## Setup
+No web UI, no TUI, no pip dependencies.
+
+## Requirements
+
+- Python 3.10+
+- Ollama running at `http://127.0.0.1:11434`
+- A tool-capable model, default `qwen3.5:4b`
 
 ```powershell
 ollama pull qwen3.5:4b
@@ -13,80 +19,157 @@ ollama pull qwen3.5:4b
 ## Run
 
 ```powershell
-python pc_manager.py
-python pc_manager.py --self-check
-python pc_manager.py --model qwen3.5:9b --max-steps 60 --think
+cd C:\path\to\project
+python C:\Users\zarzi\OneDrive\Bureau\opencode\Projects\deepcode\deepcode.py
+
+# or pick a workspace explicitly
+python deepcode.py --workspace C:\path\to\project
 ```
 
-Banner shows the model, allowed root, session time, and session log path. Type a task;
-`/exit` quits; Ctrl+C aborts the current task and returns to the prompt.
+Type a request at `YOU ›`. `/new` starts a fresh conversation, `/resume` is a
+launch flag, `/exit` quits, Ctrl+C aborts the current generation.
 
-## Look
+## Example
 
 ```text
-  ██████╗  ██████╗    M A N A G E R
-  ██╔══██╗██╔════╝    AUTONOMOUS DESKTOP AGENT
-  ██████╔╝██║         ────────────────────────────────────
-  ██╔═══╝ ██║         MODEL      qwen3.5:4b
-  ██║     ╚██████╗    ROOT       C:\Users\you
-  ╚═╝      ╚═════╝    SESSION    2026-11-11 · 21:54
-                      LOG        …\sessions\2026-11-11T21-54-04.jsonl
+YOU › Fix buggy.py so test_buggy.py passes. Run the test to verify.
 
-  Type a request.  /exit quits.  Ctrl+C aborts.
+  STEP 01   4.0s · 14 tok · 16.2/s
+  LIST     .
+  │ ...buggy.py  (32 bytes)
+  │ ...test_buggy.py  (101 bytes)
 
-YOU › list the 5 biggest files in Downloads
+  STEP 04   12s · 144 tok · 12.3/s
+  SAY
+  │ add() subtracts instead of adding.
+  EDIT     ...\buggy.py
+  │ -     return a - b
+  │ +     return a + b
 
-    STEP 01                                            2.3s
-    SHELL   Get-ChildItem -Recurse ...                 0.41s
-    │ exit 0 · 5 lines
-    │ FullName                            Length
-    │ ...
+  STEP 06   4.0s · 48 tok · 14.4/s
+  SHELL    python ...\test_buggy.py
+  │ exit 0 · 1 line
+  │ PASS
 
-    STEP 02                                            1.1s
-    EDIT    notes.txt                                  0.02s
-    │ - beta
-    │ + gamma
-
-  ──────────────────────────────────────────────────
-  ✓ DONE    8.4s · 2 steps · 812 tokens
-    Listed the 5 largest files. Nothing changed.
+  ✓ DONE    36s · 7 steps · 385 tokens · 13.6 tok/s
+    The test passes.
 ```
-
-Steps and tools show durations. `update_todo` renders as a checklist and `edit_file`
-shows a capped `- old` / `+ new` diff. Tool output is indented, ANSI-stripped, capped
-at 15 lines, and points to the session log for the rest. A spinner runs during model
-calls on a real terminal. Colors switch off automatically when output is piped, so
-logs and tests stay plain; `--color always` forces them on.
-
-| Flag | Default | Meaning |
-|---|---|---|
-| `--model` | `qwen3.5:4b` | Any Ollama model with tool support |
-| `--api` | `http://127.0.0.1:11434` | Ollama server |
-| `--root` | user home | Boundary for file tools only |
-| `--max-steps` | 40 | Model turns per task |
-| `--think` | off | Enable model reasoning (slower) |
-| `--color` | `auto` | `auto`, `always`, or `never`; `NO_COLOR` is respected |
-| `--session-dir` | `./sessions` | JSONL logs |
 
 ## Tools
 
-`shell` (PowerShell, any command), `list_dir`, `read_file`, `write_file`,
-`edit_file`, `search_files`, `update_todo`, `finish`.
+| Tool | What it does |
+|---|---|
+| `shell` | PowerShell 5.1, full disk, optional `workdir` and `timeout` |
+| `read_file` | line-numbered reads with `offset`/`limit` |
+| `write_file` | create or overwrite, parents created |
+| `edit_file` | exact replacement, optional `replace_all`, shown as a diff |
+| `list_dir` | directory listing, optional recursive |
+| `search_files` | case-sensitive regex content search with glob filter |
+| `update_todo` | checklist for multi-step work |
 
-## Safety model
+A reply with no tool calls ends the turn. There is no `finish()` requirement.
 
-- No confirmation prompts. The model executes what it emits, as your user.
-- Desktop, Documents, Downloads, and Pictures are resolved with the Windows
-  known-folder API and passed to the model verbatim, so OneDrive-redirected
-  folders are used instead of a guessed `<home>\Desktop`.
-- File tools are clamped to `--root`; `shell` is not clamped and can reach anything
-  your account can. Edits and deletes are permanent.
-- Session logs record every task, tool call, and result, but they are not a backup.
-- No elevation: admin-only commands fail unless the harness itself runs as admin.
+`AGENTS.md` in the workspace is loaded into the system prompt automatically.
+The real Desktop path is resolved through the registry, so "put it on my
+desktop" works even when OneDrive has redirected known folders.
 
-## Adding or removing a feature
+## Performance profile
 
-1. Write `tool_your_name(h, args)` above `TOOL_FUNCS`.
-2. Add it to `TOOL_FUNCS` and add its JSON schema to `TOOL_SCHEMAS`.
-3. Update `CAPABILITIES` / `LIMITATIONS` at the top of `pc_manager.py`.
-4. Optionally tune the constants at the top (timeouts, caps, history window).
+Defaults are tuned for a laptop with limited VRAM:
+
+| Flag | Default | Why |
+|---|---|---|
+| `--threads` | 8 | leaves CPU headroom; biggest heat lever |
+| `--ctx` | 4096 | smaller KV cache and prompt |
+| `--max-predict` | 1024 | caps runaway generations |
+| `--max-minutes` | 20 | hard wall-clock stop per request; 0 disables |
+| `--max-steps` | 60 | bounds total model turns |
+
+The system prompt is static and the conversation is append-only, so Ollama can
+reuse its prompt cache. History is trimmed before each turn from `--ctx` and
+`--max-predict`, leaving room for the answer; raise `--ctx` to keep more
+history. Tool output is capped at 6,000 characters (3,072 at the default 4k
+context).
+
+`--doctor` measures the real model once and prints load time, generation speed,
+and the GPU/CPU split:
+
+```text
+BACKEND    ollama
+MODEL      qwen3.5:4b
+LOAD       0.01s
+GEN        17.0 tok/s (16 tokens)
+SETTINGS   ctx 4096 · 8 threads · max predict 1024
+MEMORY     3.7 GB · GPU 50% · CPU 50%
+! WARN     CPU fallback is active; expect heat.
+```
+
+On a 4 GB GPU, a 3.7 GB model is split across CPU and GPU. No harness setting
+changes that. If it still runs hot, lower `--threads 6` (or 4), use a smaller
+model such as `qwen3.5:2b`, or use a remote API.
+
+## Remote API
+
+The OpenAI-compatible path is selected automatically when `--api` ends in `/v1`:
+
+```powershell
+python deepcode.py `
+  --api https://api.deepseek.com/v1 `
+  --model deepseek-chat `
+  --key $env:DEEPSEEK_API_KEY
+```
+
+`--key` can also come from `DEEPCODE_API_KEY`, `DEEPSEEK_API_KEY`, or
+`OPENAI_API_KEY`. Remote calls are currently non-streaming; local Ollama calls
+stream so Ctrl+C stops generation immediately.
+
+## Sessions and resume
+
+Every message and tool call is appended to `sessions/*.jsonl`.
+
+```powershell
+python deepcode.py --resume            # latest session
+python deepcode.py --resume sessions\2026-11-13T22-00-01.jsonl
+```
+
+The workspace and model are taken from the current launch; the conversation is
+restored. An interrupted tool-call tail is dropped on load, and `--resume`
+without a path skips empty session files left behind by `/new`.
+
+## Flags
+
+| Flag | Default | Meaning |
+|---|---|---|
+| `--model` | `qwen3.5:4b` | Ollama model or API model |
+| `--api` | `http://127.0.0.1:11434` | Native Ollama URL, or OpenAI base ending in `/v1` |
+| `--key` | env | API key for remote backends |
+| `--backend` | `auto` | `auto`, `ollama`, `openai` |
+| `--workspace` | current dir | Base for relative paths |
+| `--max-steps` | 60 | Model turns per request |
+| `--max-minutes` | 20 | Wall-clock cap per request |
+| `--threads` | 8 | Ollama CPU threads, 0 = auto |
+| `--ctx` | 4096 | Context window in tokens |
+| `--max-predict` | 1024 | Max generated tokens per call |
+| `--temperature` | 0.2 | Sampling temperature |
+| `--color` | `auto` | `auto`, `always`, `never` |
+| `--session-dir` | `./sessions` | JSONL logs |
+| `--resume` | off | Latest session or a log path |
+| `--doctor` | off | Measure model speed and GPU split |
+| `--self-check` | off | Local sanity checks, no model |
+
+## Safety
+
+- **No path clamp.** File tools reach the whole disk. Shell runs as you.
+- **No confirmations.** The model executes what it emits.
+- **No undo.** Overwrites and deletes are permanent. Use git for checkpoints.
+- **Session logs are not backups.**
+- Standard library only; no network calls except the configured model API.
+
+## Self-check
+
+```powershell
+python deepcode.py --self-check
+```
+
+Checks path resolution, history trimming, tool schemas, OpenAI/Ollama message
+conversion, streaming chunk merging, todo validation, colors, and the spinner.
