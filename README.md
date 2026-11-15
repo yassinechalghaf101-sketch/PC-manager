@@ -20,10 +20,20 @@ ollama pull qwen3.5:4b
 
 ```powershell
 cd C:\path\to\project
-python C:\Users\zarzi\OneDrive\Bureau\opencode\Projects\deepcode\deepcode.py
+python C:\path\to\deepcode\deepcode.py
 
 # or pick a workspace explicitly
 python deepcode.py --workspace C:\path\to\project
+```
+
+## Easy launch
+
+Double-click `deepcode.bat` to open the agent in this folder. Flags pass
+through, and dragging a folder onto the file uses it as the workspace:
+
+```powershell
+deepcode.bat --workspace C:\path\to\project
+deepcode.bat --resume
 ```
 
 Type a request at `YOU ›`. `/new` starts a fresh conversation, `/resume` is a
